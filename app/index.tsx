@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: Colors.background,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: '100%',
