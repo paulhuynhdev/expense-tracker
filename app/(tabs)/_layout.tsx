@@ -10,12 +10,12 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}
+    // screenOptions={{
+    //   tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+    //   headerShown: false,
+    // }}
     >
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
@@ -38,6 +38,20 @@ export default function TabLayout() {
             />
           ),
         }}
+      /> */}
+      <Tabs.Screen
+        name="news"
+        options={{
+          title: 'News Feed',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? 'home' : 'home-outline'}
+              color={color}
+            />
+          ),
+        }}
+
+        // <Tabs.Screen name='index' options={{}}/>
       />
     </Tabs>
   );

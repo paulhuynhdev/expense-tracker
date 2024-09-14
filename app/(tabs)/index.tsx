@@ -1,29 +1,32 @@
-import { StyleSheet, View, Button, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { StyleSheet, View, Button } from 'react-native';
+import { Link } from 'expo-router';
 
 export default function HomeScreen() {
-  const [image, setImage] = useState<string | null>(null);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
   return (
     <View style={styles.container}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={styles.image} />}
+      <Link href="/profile" asChild>
+        <Button title="Go to profile" />
+      </Link>
+
+      <Link href="/feed" asChild>
+        <Button title="Go to feed" />
+      </Link>
+
+      <Link href="/detail/42" asChild>
+        <Button title="Go Detail 42" />
+      </Link>
+
+      <Link href="/detail/1337" asChild>
+        <Button title="Go Detail 1337" />
+      </Link>
+
+      <Link href="/drawer" asChild replace>
+        <Button title="Go Drawer" />
+      </Link>
+
+      <Link href="/(tabs)/explore" asChild>
+        <Button title="Go To Tab" />
+      </Link>
     </View>
   );
 }
