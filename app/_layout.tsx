@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
@@ -7,6 +7,8 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { StatusBar } from 'expo-status-bar';
 import Colors from '@/constants/Colors';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { ActivityIndicator } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -16,14 +18,30 @@ function InitialLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  const { token, initialized } = useAuth();
+  const router = useRouter();
+  const segments = useSegments();
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
+  useEffect(() => {
+    if (!initialized) return;
+
+    const inAuthGroup = segments[0] === '(authenticated)';
+
+    if (token && !inAuthGroup) {
+      router.replace('/(authenticated)/(drawer)/(tabs)/home');
+    } else if (!token && inAuthGroup) {
+      router.replace('/');
+    }
+  }, [token, initialized]);
+
+  if (!loaded || !initialized) {
+    return <ActivityIndicator size={'large'} />;
   }
 
   return (
@@ -61,5 +79,9 @@ function InitialLayout() {
 }
 
 export default function RootLayout() {
-  return <InitialLayout />;
+  return (
+    <AuthProvider>
+      <InitialLayout />
+    </AuthProvider>
+  );
 }
