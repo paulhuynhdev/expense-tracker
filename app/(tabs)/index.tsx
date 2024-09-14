@@ -1,41 +1,52 @@
-import { StyleSheet, View, Button, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import Basic from '@/components/Basic';
+import SafeBox from '@/components/SafeBox';
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+  Platform,
+} from 'react-native';
 
 export default function HomeScreen() {
-  const [image, setImage] = useState<string | null>(null);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
+  const { height, width, scale, fontScale } = useWindowDimensions();
   return (
-    <View style={styles.container}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={styles.image} />}
+    <View style={container}>
+      <Text style={text}>{`${height} ${width} ${scale} ${fontScale}`}</Text>
+      <Text style={text}>{Platform.OS === 'android' && 'this is android'}</Text>
+      <Basic />
+
+      <View style={{ width: width / 2, backgroundColor: 'green' }}>
+        <Text>aa</Text>
+      </View>
+      <SafeBox />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const page = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // padding: 24,
+    backgroundColor: '#fff',
   },
-  image: {
-    width: 200,
-    height: 200,
+  text: {
+    fontSize: 30,
+    color: '#000',
   },
 });
+
+const lists = StyleSheet.create({
+  listContainer: {
+    flex: 1,
+    backgroundColor: '#61dafb',
+  },
+  listItem: {
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+  },
+});
+
+const container = StyleSheet.compose(page.container, lists.listContainer);
+const text = StyleSheet.compose(page.text, lists.listItem);
