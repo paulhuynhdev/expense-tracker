@@ -1,21 +1,25 @@
 import {
+  FlatList,
   StyleSheet,
   View,
-  Button,
-  Image,
-  FlatList,
-  ListRenderItem,
-  TouchableOpacity,
   Text,
+  ListRenderItem,
+  Image,
+  TouchableOpacity,
+  Button,
 } from 'react-native';
-import data from '@/assets/data.json';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import useCartStore from '@/store/cartStore';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Product } from '@/store/interfaces';
 
-export default function HomeScreen() {
-  const { reduceProduct, addProduct } = useCartStore();
+export default function ModalScreen() {
+  const { reduceProduct, addProduct, products, clearCart, total } =
+    useCartStore();
 
-  const renderItem: ListRenderItem<any> = ({ item }) => (
+  const renderItem: ListRenderItem<Product & { quantity: number }> = ({
+    item,
+  }) => (
     <View style={styles.cartItemContainer}>
       <Image style={styles.cartItemImage} source={{ uri: item.image }} />
       <View style={styles.itemContainer}>
@@ -26,6 +30,7 @@ export default function HomeScreen() {
         <TouchableOpacity onPress={() => reduceProduct(item)}>
           <Ionicons name="remove" size={20} color={'#000'} />
         </TouchableOpacity>
+        <Text>{item.quantity}</Text>
         <TouchableOpacity onPress={() => addProduct(item)}>
           <Ionicons name="add" size={20} color={'#000'} />
         </TouchableOpacity>
@@ -34,13 +39,22 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <FlatList
+          data={products}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          ListFooterComponent={
+            <Text style={{ fontWeight: 'bold', margin: 10 }}>
+              Total: ${total()}
+            </Text>
+          }
+        />
+
+        <Button title="Clear Cart" onPress={clearCart} />
+      </View>
+    </SafeAreaView>
   );
 }
 
