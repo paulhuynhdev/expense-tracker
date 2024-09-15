@@ -3,6 +3,8 @@ import 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/constants/Colors';
 
 const DrawerLayout = () => {
   return (
@@ -12,7 +14,11 @@ const DrawerLayout = () => {
           drawerHideStatusBarOnOpen: true,
           drawerActiveBackgroundColor: '#5363df',
           drawerActiveTintColor: '#fff',
+          headerTintColor: '#fff',
           drawerLabelStyle: { marginLeft: -20 },
+          headerStyle: {
+            backgroundColor: Colors.dark.background,
+          },
         }}
       >
         <Drawer.Screen
@@ -50,5 +56,19 @@ const DrawerLayout = () => {
     </GestureHandlerRootView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+});
 
 export default DrawerLayout;
