@@ -2,9 +2,10 @@ import {
   View,
   Text,
   Button,
-  SafeAreaView,
   StyleSheet,
   SectionList,
+  TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Expense, expenses } from '../data';
